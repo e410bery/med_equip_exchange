@@ -5,6 +5,9 @@ GitHub: https://github.com/e410bery/med_equip_exchange
 # Zhong Zhao
 Designed page-by-page visuals for "Home", "Log In", "Register", "Profile and Organization Settings", "Browse Equipment / Search Results", "Equipment Listing Detail", "Seller Profile", "Shopping Cart", and "Checkout".
 
+# Ella Fortenbery
+Designed page-by-page visuals for "Order Confirmation", "My Orders", "Order Details", "Write / Edit Review", "Seller Dashboard", "My Listings", "Create / Edit Listing", "Maintenance and Certification Management", "Seller Orders / Fulfillment".
+
 # Colin Zeng
 - Implemented equipment search and browsing, including keyword search
   across equipment names and descriptions and filtering by category,
