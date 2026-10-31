@@ -1,85 +1,60 @@
-from flask import Flask, jsonify, request
+import os
+from datetime import date, datetime
 
-from db import query
+from flask import Flask, jsonify
+from flask.json.provider import DefaultJSONProvider
+
+from db import close_db
+from helpers import ApiError
+from routes import auth, catalog, rentals, reviews, seller, shop
+
+
+class JSONProvider(DefaultJSONProvider):
+    """Send dates as ISO strings ("2026-11-03") instead of Flask's HTTP-date format.
+    Money (DECIMAL) is sent as a string like "189.99" so no precision is lost."""
+
+    @staticmethod
+    def default(o):
+        if isinstance(o, (date, datetime)):
+            return o.isoformat()
+        return DefaultJSONProvider.default(o)
+
 
 app = Flask(__name__)
+app.json = JSONProvider(app)
+# Signs the session cookie that keeps users logged in. Set a long random
+# SECRET_KEY in .env (and on any deployed server); the fallback is for local dev only.
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-not-secret")
+app.teardown_appcontext(close_db)
+
+for module in (auth, catalog, shop, reviews, rentals, seller):
+    app.register_blueprint(module.bp)
 
 
-@app.route("/users")
-def users():
-    rows = query("SELECT id, email, full_name, address, balance FROM users ORDER BY id")
-    return jsonify(rows)
+@app.errorhandler(ApiError)
+def handle_api_error(err):
+    return jsonify(error=err.message), err.status
 
 
-@app.route("/items")
-def items():
-    # Optional filters: ?q=keyword&seller_id=N&min_price=X&max_price=Y&in_stock=1
-    args = request.args
-    sql = """
-        SELECT i.id, i.name, i.description, i.price, i.quantity,
-               i.seller_id, u.full_name AS seller_name
-        FROM items i
-        JOIN users u ON u.id = i.seller_id
-        WHERE TRUE
-    """
-    params = {}
-    if args.get("q"):
-        sql += " AND (i.name ILIKE %(q)s OR i.description ILIKE %(q)s)"
-        params["q"] = f"%{args['q']}%"
-    if args.get("seller_id") is not None:
-        if not args["seller_id"].isdigit():
-            return jsonify(error="seller_id must be an integer"), 400
-        sql += " AND i.seller_id = %(seller_id)s"
-        params["seller_id"] = args["seller_id"]
-    for key, op in (("min_price", ">="), ("max_price", "<=")):
-        if args.get(key) is not None:
-            try:
-                params[key] = float(args[key])
-            except ValueError:
-                return jsonify(error=f"{key} must be a number"), 400
-            sql += f" AND i.price {op} %({key})s"
-    if args.get("in_stock") == "1":
-        sql += " AND i.quantity > 0"
-    sql += " ORDER BY i.name"
-    return jsonify(query(sql, params))
+@app.errorhandler(404)
+def not_found(err):
+    return jsonify(error="not found"), 404
 
 
-@app.route("/items/<int:item_id>")
-def item_detail(item_id):
-    rows = query(
-        """
-        SELECT i.id, i.name, i.description, i.price, i.quantity,
-               i.seller_id, u.full_name AS seller_name, u.email AS seller_email
-        FROM items i
-        JOIN users u ON u.id = i.seller_id
-        WHERE i.id = %(id)s
-        """,
-        {"id": item_id},
+@app.errorhandler(405)
+def method_not_allowed(err):
+    return jsonify(error="method not allowed"), 405
+
+
+@app.route("/")
+def index():
+    """Lists every API route, so you can see what's available."""
+    routes = sorted(
+        (rule.rule, sorted(rule.methods - {"HEAD", "OPTIONS"}))
+        for rule in app.url_map.iter_rules()
+        if rule.endpoint != "static"
     )
-    if not rows:
-        return jsonify(error="item not found"), 404
-    return jsonify(rows[0])
-
-
-@app.route("/orders")
-def orders():
-    buyer_id = request.args.get("buyer_id")
-    if buyer_id is not None and not buyer_id.isdigit():
-        return jsonify(error="buyer_id must be an integer"), 400
-    sql = """
-        SELECT o.id, o.buyer_id, o.placed_at,
-               SUM(li.quantity * li.unit_price) AS total,
-               SUM(li.quantity) AS item_count
-        FROM orders o
-        JOIN line_items li ON li.order_id = o.id
-        WHERE o.placed_at IS NOT NULL
-    """
-    params = {}
-    if buyer_id is not None:
-        sql += " AND o.buyer_id = %(buyer_id)s"
-        params["buyer_id"] = buyer_id
-    sql += " GROUP BY o.id ORDER BY o.placed_at DESC"
-    return jsonify(query(sql, params))
+    return jsonify([f"{' '.join(methods)} {path}" for path, methods in routes])
 
 
 if __name__ == "__main__":
