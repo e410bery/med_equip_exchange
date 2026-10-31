@@ -1,0 +1,106 @@
+/* Shared styles for every page. Add page-specific rules at the bottom. */
+:root {
+  --text: #1f2933;
+  --muted: #616e7c;
+  --border: #d9e2ec;
+  --bg: #f5f7fa;
+  --primary: #1d6fa5;
+  --primary-dark: #155a87;
+  --warn-bg: #fff4e0;
+  --warn-text: #8a5300;
+  --error-bg: #fde8e8;
+  --error-text: #a61b1b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+
+header .brand { font-weight: 700; color: var(--primary); text-decoration: none; }
+header nav { display: flex; gap: 1rem; flex: 1; }
+header a { color: var(--text); text-decoration: none; }
+header a:hover { color: var(--primary); }
+#account a { margin-left: 0.5rem; }
+
+main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
+
+h1 { margin-top: 0; }
+
+a { color: var(--primary); }
+
+.muted { color: var(--muted); }
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.banner { padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1rem; }
+.banner.error { background: var(--error-bg); color: var(--error-text); }
+.banner.warn { background: var(--warn-bg); color: var(--warn-text); }
+
+button, .button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  background: var(--primary);
+  color: white;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+button:hover, .button:hover { background: var(--primary-dark); }
+button.secondary, .button.secondary { background: white; color: var(--primary); }
+button.link {
+  border: none; background: none; color: var(--error-text);
+  padding: 0; text-decoration: underline;
+}
+button:disabled, .button.disabled {
+  opacity: 0.5; cursor: not-allowed; pointer-events: none;
+}
+
+input, select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+}
+
+form.stacked { display: grid; gap: 0.75rem; max-width: 360px; }
+form.stacked label { display: grid; gap: 0.25rem; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 0.75rem 0.5rem; text-align: left; border-bottom: 1px solid var(--border); }
+th { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+td.num, th.num { text-align: right; }
+
+/* ---------- Shopping cart ---------- */
+.cart-layout { display: grid; grid-template-columns: 1fr 280px; gap: 1.5rem; align-items: start; }
+@media (max-width: 760px) { .cart-layout { grid-template-columns: 1fr; } }
+.cart-qty { width: 4.5rem; }
+tr.has-problem td { background: var(--warn-bg); }
+.problem { color: var(--warn-text); font-size: 0.85rem; font-weight: 600; }
+.summary dl { display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 1rem; margin: 0 0 1rem; }
+.summary dt { color: var(--muted); }
+.summary dd { margin: 0; text-align: right; }
+.summary .total { font-weight: 700; font-size: 1.1rem; }
+.negative { color: var(--error-text); font-weight: 600; }
+.summary .button { width: 100%; text-align: center; margin-top: 0.5rem; }

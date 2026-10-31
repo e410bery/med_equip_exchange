@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a></nav>
+    <div id="account"></div>
+  </header>
+
+  <!-- Placeholder list of items; replace with the full Home and Browse Equipment designs. -->
+  <main>
+    <h1>Equipment</h1>
+    <div id="error" class="banner error" hidden></div>
+    <div class="card"><table><tbody id="items"></tbody></table></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script>
+    api("/api/items?per_page=50")
+      .then(({ items }) => {
+        document.getElementById("items").replaceChildren(...items.map((item) =>
+          el("tr", {},
+            el("td", {}, el("a", { href: `item.html?id=${item.id}` }, item.name)),
+            el("td", { class: "muted" }, item.seller_name),
+            el("td", { class: "num" }, money(item.price)),
+            el("td", { class: "num muted" }, `${item.quantity} in stock`),
+          )));
+      })
+      .catch((err) => showError(err.message));
+  </script>
+</body>
+</html>

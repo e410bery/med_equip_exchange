@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopping Cart · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a></nav>
+    <div id="account"></div>
+  </header>
+
+  <main>
+    <h1>Shopping Cart</h1>
+    <div id="error" class="banner error" hidden></div>
+    <p id="loading" class="muted">Loading your cart…</p>
+
+    <div class="cart-layout">
+      <!-- Filled in by js/cart.js from GET /api/cart -->
+      <section id="cart-lines"></section>
+
+      <aside id="summary" class="card summary" hidden>
+        <h2>Summary</h2>
+        <dl>
+          <dt>Items</dt><dd id="item-count"></dd>
+          <dt class="total">Total</dt><dd id="total" class="total"></dd>
+          <dt>Your balance</dt><dd id="balance"></dd>
+          <dt>Balance after checkout</dt><dd id="balance-after"></dd>
+        </dl>
+        <div id="checkout-blocked" class="banner warn" hidden></div>
+        <a id="checkout" class="button" href="checkout.html">Proceed to checkout</a>
+        <a class="button secondary" href="index.html">Continue browsing</a>
+      </aside>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>

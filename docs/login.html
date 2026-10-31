@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a></nav>
+    <div id="account"></div>
+  </header>
+
+  <!-- Placeholder login page so the cart can be demoed; replace with the full Log In design. -->
+  <main>
+    <h1>Log in</h1>
+    <div id="error" class="banner error" hidden></div>
+    <form id="login-form" class="stacked card">
+      <label>Email <input name="email" type="email" required autocomplete="username"></label>
+      <label>Password <input name="password" type="password" required autocomplete="current-password"></label>
+      <button type="submit">Log in</button>
+      <p class="muted">Sample accounts: carol@example.com, bob@example.com (password123)</p>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
