@@ -46,10 +46,6 @@ def method_not_allowed(err):
     return jsonify(error="method not allowed"), 405
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
 @app.get("/")
 def index():
     return send_from_directory(
@@ -64,3 +60,7 @@ def website_file(filename):
         app.root_path + "/docs",
         filename,
     )
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

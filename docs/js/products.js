@@ -226,31 +226,21 @@ async function showDetail(id) {
     "#detail-content"
   );
 
-  const loadingHeading = node(
+  const heading = node(
     "h2",
     "Loading details…"
   );
 
-  loadingHeading.id = "detail-title";
+  heading.id = "detail-title";
 
-  content.replaceChildren(loadingHeading);
-  const purchaseLink = node(
-    "a",
-    "Open purchase page",
-    "button"
-  );
+  content.replaceChildren(heading);
 
-  purchaseLink.href =
-    `/docs/item.html?id=${item.id}`;
-
-  content.append(purchaseLink);
-  dialog.showModal();
+  if (!dialog.open) {
+    dialog.showModal();
+  }
 
   try {
-    // Reuse the team's existing equipment-detail endpoint.
-    const item = await api(
-      `/api/items/${id}`
-    );
+    const item = await api(`/api/items/${id}`);
 
     if (
       current !== detailNumber ||
@@ -259,12 +249,7 @@ async function showDetail(id) {
       return;
     }
 
-    const heading = node(
-      "h2",
-      item.name
-    );
-
-    heading.id = "detail-title";
+    heading.textContent = item.name;
 
     content.replaceChildren(
       heading,
@@ -289,15 +274,9 @@ async function showDetail(id) {
         `(#${item.seller.id})`
       ),
 
-      node(
-        "p",
-        item.description
-      ),
+      node("p", item.description),
 
-      node(
-        "h3",
-        "Specifications"
-      ),
+      node("h3", "Specifications"),
 
       node(
         "pre",
@@ -306,16 +285,142 @@ async function showDetail(id) {
       )
     );
 
+    // Purchasing controls.
+    const purchaseForm = node("form");
+    purchaseForm.className = "stacked";
+
+    const quantityLabel = node(
+      "label",
+      "Quantity"
+    );
+
+    const quantity = node("input");
+    quantity.type = "number";
+    quantity.min = "1";
+    quantity.max = String(item.quantity);
+    quantity.step = "1";
+    quantity.value = "1";
+    quantity.required = true;
+
+    quantityLabel.append(quantity);
+
+    const addButton = node(
+      "button",
+      item.quantity > 0
+        ? "Add to cart"
+        : "Out of stock"
+    );
+
+    addButton.type = "submit";
+
+    quantity.disabled = item.quantity <= 0;
+    addButton.disabled = item.quantity <= 0;
+
+    const message = node("p");
+    message.setAttribute("role", "status");
+    message.setAttribute("aria-live", "polite");
+
+    purchaseForm.append(
+      quantityLabel,
+      addButton,
+      message
+    );
+
+    purchaseForm.addEventListener(
+      "submit",
+      async (event) => {
+        event.preventDefault();
+
+        if (!purchaseForm.reportValidity()) {
+          return;
+        }
+
+        const amount = Number(quantity.value);
+
+        if (
+          !Number.isInteger(amount) ||
+          amount < 1 ||
+          amount > item.quantity
+        ) {
+          message.textContent =
+            "Enter a valid quantity within available stock.";
+          return;
+        }
+
+        addButton.disabled = true;
+        message.textContent = "Adding to cart…";
+
+        try {
+          const response = await fetch(
+            "/api/cart/items",
+            {
+              method: "POST",
+
+              credentials: "same-origin",
+
+              headers: {
+                "Content-Type": "application/json",
+              },
+
+              body: JSON.stringify({
+                item_id: item.id,
+                quantity: amount,
+              }),
+            }
+          );
+
+          if (response.status === 401) {
+            // Log in, then return to this products search.
+            const next =
+              location.pathname + location.search;
+
+            location.href =
+              "/docs/login.html?next=" +
+              encodeURIComponent(next);
+
+            return;
+          }
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              data.error || "Could not add this item."
+            );
+          }
+
+          const cartLink = node(
+            "a",
+            "View cart"
+          );
+
+          cartLink.href = "/docs/cart.html";
+
+          message.replaceChildren(
+            "Added to your cart. ",
+            cartLink
+          );
+        } catch (err) {
+          message.textContent = err.message;
+        } finally {
+          addButton.disabled = item.quantity <= 0;
+        }
+      }
+    );
+
+    content.append(
+      node("h3", "Purchase"),
+      purchaseForm
+    );
+
+    // Maintenance records.
     content.append(
       node("h3", "Maintenance history")
     );
 
     if (!item.maintenance.length) {
       content.append(
-        node(
-          "p",
-          "No maintenance records on file."
-        )
+        node("p", "No maintenance records on file.")
       );
     }
 
@@ -325,25 +430,25 @@ async function showDetail(id) {
           "p",
           `${record.performed_on}: ` +
           `${record.description} · ` +
-          "Performed by: " +
-          `${record.performed_by || "Not recorded"} · ` +
-          "Next due: " +
-          `${record.next_due || "Not recorded"}` +
+          `Performed by: ${
+            record.performed_by || "Not recorded"
+          } · ` +
+          `Next due: ${
+            record.next_due || "Not recorded"
+          }` +
           (record.overdue ? " · OVERDUE" : "")
         )
       );
     }
 
+    // Certification records.
     content.append(
       node("h3", "Certifications")
     );
 
     if (!item.certifications.length) {
       content.append(
-        node(
-          "p",
-          "No certifications on file."
-        )
+        node("p", "No certifications on file.")
       );
     }
 
@@ -363,16 +468,14 @@ async function showDetail(id) {
       );
     }
 
+    // Equipment reviews.
     content.append(
       node("h3", "Equipment reviews")
     );
 
     if (!item.reviews.length) {
       content.append(
-        node(
-          "p",
-          "No reviews yet."
-        )
+        node("p", "No reviews yet.")
       );
     }
 
@@ -391,12 +494,7 @@ async function showDetail(id) {
       current === detailNumber &&
       dialog.open
     ) {
-      const heading = node(
-        "h2",
-        "Details unavailable"
-      );
-
-      heading.id = "detail-title";
+      heading.textContent = "Details unavailable";
 
       content.replaceChildren(
         heading,
