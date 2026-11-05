@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Browse Equipment · MedEquip Exchange</title>
+
+  <link
+    rel="stylesheet"
+    href="/products-assets/css/products.css"
+  >
+
+  <script
+    src="/products-assets/js/products.js"
+    defer
+  ></script>
+</head>
+
+<body>
+  <header>
+    <a href="/products" class="brand">
+      MedEquip Exchange
+    </a>
+
+    <span>Medical equipment marketplace</span>
+  </header>
+
+  <main>
+    <p class="eyebrow">EQUIPMENT CATALOG</p>
+
+    <h1>Find equipment for your next step.</h1>
+
+    <p>
+      Browse seller listings, compare prices, and inspect
+      maintenance and certification records.
+    </p>
+
+    <form id="filters">
+      <div class="search">
+        <label>
+          Search equipment
+
+          <input
+            name="q"
+            maxlength="200"
+            placeholder="Try ultrasound, wheelchair, or CPAP"
+          >
+        </label>
+
+        <button type="submit">
+          Search equipment
+        </button>
+
+        <button type="reset" class="secondary">
+          Reset
+        </button>
+      </div>
+
+      <div class="layout">
+        <aside>
+          <h2>Refine results</h2>
+
+          <label>
+            Category
+
+            <select name="category_id">
+              <option value="">All categories</option>
+            </select>
+          </label>
+
+          <label>
+            Manufacturer
+
+            <select name="manufacturer_id">
+              <option value="">All manufacturers</option>
+            </select>
+          </label>
+
+          <label>
+            Condition
+
+            <select name="condition">
+              <option value="">All conditions</option>
+            </select>
+          </label>
+
+          <label>
+            Location
+
+            <select name="location">
+              <option value="">All locations</option>
+            </select>
+          </label>
+
+          <div class="prices">
+            <label>
+              Min price ($)
+
+              <input
+                name="min_price"
+                type="number"
+                min="0"
+                max="9999999999"
+                step="0.01"
+              >
+            </label>
+
+            <label>
+              Max price ($)
+
+              <input
+                name="max_price"
+                type="number"
+                min="0"
+                max="9999999999"
+                step="0.01"
+              >
+            </label>
+          </div>
+
+          <label class="check">
+            <input
+              name="in_stock"
+              type="checkbox"
+              value="1"
+            >
+
+            In stock only
+          </label>
+
+          <label class="check">
+            <input
+              name="certified"
+              type="checkbox"
+              value="1"
+            >
+
+            Current certification on file
+          </label>
+
+          <p class="muted">
+            Matches a recorded certificate issued by today
+            and expiring today or later.
+          </p>
+
+          <button type="submit">
+            Apply filters
+          </button>
+        </aside>
+
+        <section aria-label="Equipment results">
+          <div class="toolbar">
+            <p
+              id="summary"
+              role="status"
+              aria-live="polite"
+            ></p>
+
+            <label>
+              Sort by
+
+              <select name="sort">
+                <option value="name">Name</option>
+
+                <option value="price_asc">
+                  Price: low to high
+                </option>
+
+                <option value="price_desc">
+                  Price: high to low
+                </option>
+
+                <option value="newest">Newest</option>
+
+                <option value="rating">
+                  Highest rated
+                </option>
+              </select>
+            </label>
+
+            <label>
+              Per page
+
+              <select name="per_page">
+                <option>12</option>
+                <option>6</option>
+                <option>24</option>
+                <option>50</option>
+              </select>
+            </label>
+          </div>
+
+          <p id="error" role="alert" hidden></p>
+
+          <div id="results" class="grid"></div>
+
+          <nav
+            class="pagination"
+            aria-label="Result pages"
+          >
+            <button type="button" id="previous">
+              Previous
+            </button>
+
+            <span id="page"></span>
+
+            <button type="button" id="next">
+              Next
+            </button>
+          </nav>
+        </section>
+      </div>
+    </form>
+
+    <dialog
+      id="detail"
+      aria-labelledby="detail-title"
+    >
+      <button id="close-detail" type="button">
+        Close details
+      </button>
+
+      <div id="detail-content"></div>
+    </dialog>
+  </main>
+
+  <footer>
+    MedEquip Exchange · Student project ·
+    Synthetic equipment listings
+  </footer>
+</body>
+</html>
