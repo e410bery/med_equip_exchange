@@ -52,7 +52,7 @@ function render(cart) {
     linesBox.replaceChildren(
       el("div", { class: "card" },
         el("p", {}, "Your cart is empty."),
-        el("a", { class: "button", href: "index.html" }, "Browse equipment"),
+        el("a", { class: "button", href: "/products" }, "Browse equipment"),
       ),
     );
     return;

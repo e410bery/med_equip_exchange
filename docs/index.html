@@ -1,38 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Med Equip Exchange</title>
-  <link rel="stylesheet" href="css/style.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Home · MedEquip Exchange</title>
+
+  <link
+    rel="stylesheet"
+    href="/docs/css/style.css"
+  >
 </head>
+
 <body>
   <header>
-    <a class="brand" href="index.html">Med Equip Exchange</a>
-    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a></nav>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+    </nav>
+
     <div id="account"></div>
   </header>
 
-  <!-- Placeholder list of items; replace with the full Home and Browse Equipment designs. -->
   <main>
-    <h1>Equipment</h1>
-    <div id="error" class="banner error" hidden></div>
-    <div class="card"><table><tbody id="items"></tbody></table></div>
+    <h1>Welcome to MedEquip Exchange</h1>
+
+    <p class="muted">
+      Browse medical equipment, inspect listing details,
+      and manage your shopping cart.
+    </p>
+
+    <section class="card">
+      <h2>Find medical equipment</h2>
+
+      <p>
+        Search equipment listings by category,
+        manufacturer, condition, location, and price.
+      </p>
+
+      <a class="button" href="/products">
+        Browse equipment
+      </a>
+    </section>
+
+    <br>
+
+    <section class="card">
+      <h2>Your shopping cart</h2>
+
+      <p>
+        Review selected equipment, update quantities,
+        and see your order total.
+      </p>
+
+      <a class="button" href="/docs/cart.html">
+        Open cart
+      </a>
+    </section>
   </main>
 
-  <script src="js/api.js"></script>
-  <script>
-    api("/api/items?per_page=50")
-      .then(({ items }) => {
-        document.getElementById("items").replaceChildren(...items.map((item) =>
-          el("tr", {},
-            el("td", {}, el("a", { href: `item.html?id=${item.id}` }, item.name)),
-            el("td", { class: "muted" }, item.seller_name),
-            el("td", { class: "num" }, money(item.price)),
-            el("td", { class: "num muted" }, `${item.quantity} in stock`),
-          )));
-      })
-      .catch((err) => showError(err.message));
-  </script>
+  <script src="/docs/js/api.js"></script>
 </body>
 </html>
