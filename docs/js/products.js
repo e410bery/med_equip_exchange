@@ -234,7 +234,16 @@ async function showDetail(id) {
   loadingHeading.id = "detail-title";
 
   content.replaceChildren(loadingHeading);
+  const purchaseLink = node(
+    "a",
+    "Open purchase page",
+    "button"
+  );
 
+  purchaseLink.href =
+    `/docs/item.html?id=${item.id}`;
+
+  content.append(purchaseLink);
   dialog.showModal();
 
   try {

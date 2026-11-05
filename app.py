@@ -1,7 +1,7 @@
 import os
 from datetime import date, datetime
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask.json.provider import DefaultJSONProvider
 
 from db import close_db
@@ -46,16 +46,21 @@ def method_not_allowed(err):
     return jsonify(error="method not allowed"), 405
 
 
-@app.route("/")
-def index():
-    """Lists every API route, so you can see what's available."""
-    routes = sorted(
-        (rule.rule, sorted(rule.methods - {"HEAD", "OPTIONS"}))
-        for rule in app.url_map.iter_rules()
-        if rule.endpoint != "static"
-    )
-    return jsonify([f"{' '.join(methods)} {path}" for path, methods in routes])
-
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+@app.get("/")
+def index():
+    return send_from_directory(
+        app.root_path + "/docs",
+        "index.html",
+    )
+
+
+@app.get("/docs/<path:filename>")
+def website_file(filename):
+    return send_from_directory(
+        app.root_path + "/docs",
+        filename,
+    )
