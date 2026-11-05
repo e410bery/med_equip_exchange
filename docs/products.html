@@ -10,6 +10,13 @@
 
   <title>Browse Equipment · MedEquip Exchange</title>
 
+  <!-- Shared website appearance -->
+  <link
+    rel="stylesheet"
+    href="/products-assets/css/style.css"
+  >
+
+  <!-- Products page layout -->
   <link
     rel="stylesheet"
     href="/products-assets/css/products.css"
@@ -21,7 +28,7 @@
   ></script>
 </head>
 
-<body>
+<body class="products-page">
   <header>
     <a href="/products" class="brand">
       MedEquip Exchange
@@ -198,7 +205,12 @@
             </label>
           </div>
 
-          <p id="error" role="alert" hidden></p>
+          <p
+            id="error"
+            class="banner error"
+            role="alert"
+            hidden
+          ></p>
 
           <div id="results" class="grid"></div>
 
