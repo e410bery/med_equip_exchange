@@ -427,6 +427,10 @@ for (const key of ["sort", "per_page"]) {
   form.elements[key].addEventListener(
     "change",
     () => {
+      if (!form.reportValidity()) {
+        return;
+      }
+
       page = 1;
 
       load();
