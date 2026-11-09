@@ -58,3 +58,4 @@ Money is returned as strings like `"189.99"`; dates as `"2026-11-03"`.
 | X2 alerts | 🔒 `GET /api/seller/alerts` · 🔒 `GET /api/seller/dashboard` |
 | X3 compare | `GET /api/compare?ids=1,2,3` (2–4 items) |
 | X4 analytics | 🔒 `GET /api/seller/analytics?months=12` (monthly sales, top items, turnover) |
+| Seller tools | 🔒 `GET /api/seller/customers` · 🔒 `GET /api/seller/reviews` · 🔒 `POST /api/seller/orders/<order_id>/fulfill` · 🔒 `POST /api/seller/listings/<id>/restock` `{amount}` (page: `/docs/seller.html`) |

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seller Dashboard · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+      <a href="/docs/seller.html">Sell</a>
+    </nav>
+
+    <div id="account"></div>
+  </header>
+
+  <main>
+    <h1>Seller Dashboard</h1>
+    <div id="error" class="banner error" hidden></div>
+
+    <section class="card">
+      <h2>My listings</h2>
+      <div id="listings"></div>
+    </section>
+    <br>
+
+    <section class="card">
+      <h2>Orders to fulfill</h2>
+      <div id="orders"></div>
+    </section>
+    <br>
+
+    <section class="card">
+      <h2>My customers</h2>
+      <div id="customers"></div>
+    </section>
+    <br>
+
+    <section class="card">
+      <h2>Reviews</h2>
+      <p id="rating" class="muted"></p>
+      <div id="reviews"></div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/seller.js"></script>
+</body>
+</html>
