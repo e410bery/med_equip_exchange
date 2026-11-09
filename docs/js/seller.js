@@ -11,13 +11,19 @@ function table(headers, rows, empty) {
   );
 }
 
+let busy = false;
+
 async function run(request) {
+  if (busy) return;
+  busy = true;
   showError("");
+  document.querySelectorAll("main button").forEach((b) => (b.disabled = true));
   try {
     await request();
   } catch (err) {
     showError(err.message);
   }
+  busy = false;
   await loadAll();
 }
 
