@@ -6,7 +6,7 @@ from flask.json.provider import DefaultJSONProvider
 
 from db import close_db
 from helpers import ApiError
-from routes import auth, catalog, rentals, reviews, seller, shop, products
+from routes import auth, catalog, rentals, reviews, seller, seller_tools, shop, products
 
 
 class JSONProvider(DefaultJSONProvider):
@@ -27,7 +27,7 @@ app.json = JSONProvider(app)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-not-secret")
 app.teardown_appcontext(close_db)
 
-for module in (auth, catalog, shop, reviews, rentals, seller, products):
+for module in (auth, catalog, shop, reviews, rentals, seller, seller_tools, products):
     app.register_blueprint(module.bp)
 
 
