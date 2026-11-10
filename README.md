@@ -38,6 +38,17 @@ the sample data, so both reset the shared database for the whole team.
 Every seeded user's password is `password123` (e.g. `alice@example.com`, `dukeclinic@example.com`).
 
 # API
+Account deletion: authenticated `DELETE /api/me` with JSON
+`{"password": "your-current-password"}` returns `{"ok": true}` and clears the
+session. It deletes the user's open cart and authored reviews in one transaction.
+Missing passwords return 400; incorrect passwords return 403. Accounts with no
+remaining dependencies are permanently deleted. Otherwise their ID is retained
+as "Deleted User" to preserve order, listing, rental, and received review links.
+Personal information and balance are cleared, login is disabled, existing sessions
+are invalidated, and listings are deactivated. The original email can be reused.
+No schema migration is required; an empty password hash marks anonymous accounts.
+Run isolated tests with `python -m unittest discover -s tests`.
+
 All routes return JSON. Logging in sets a session cookie, so requests that need
 a user (marked 🔒) must send cookies (`fetch(url, {credentials: "include"})`).
 Request bodies can be JSON or form data. Errors look like `{"error": "..."}`.
@@ -46,7 +57,7 @@ Money is returned as strings like `"189.99"`; dates as `"2026-11-03"`.
 
 | Feature | Route |
 |---|---|
-| B1 accounts | `POST /api/register` `{email, password, full_name, address, organization?}` · `POST /api/login` `{email, password}` · `POST /api/logout` · 🔒 `GET /api/me` · 🔒 `PATCH /api/me` `{full_name?, email?, address?, organization?}` · 🔒 `POST /api/me/password` `{current_password, new_password}` · 🔒 `POST /api/me/balance` `{amount}` |
+| B1 accounts | `POST /api/register` `{email, password, full_name, address, organization?}` · `POST /api/login` `{email, password}` · `POST /api/logout` · 🔒 `GET /api/me` · 🔒 `PATCH /api/me` `{full_name?, email?, address?, organization?}` · 🔒 `DELETE /api/me` `{password}` · 🔒 `POST /api/me/password` `{current_password, new_password}` · 🔒 `POST /api/me/balance` `{amount}` |
 | B2 browse | `GET /api/items?q=&category_id=&manufacturer_id=&seller_id=&condition=&location=&min_price=&max_price=&in_stock=1&rentable=1&sort=name\|price_asc\|price_desc\|newest\|rating&page=&per_page=` · `GET /api/filters` (dropdown options) |
 | B3 detail | `GET /api/items/<id>` (specs, seller, avg rating, reviews, maintenance, certifications, related) · `GET /api/sellers/<id>` |
 | B4 listings | 🔒 `GET /api/seller/listings` · 🔒 `POST /api/seller/listings` · 🔒 `PATCH /api/seller/listings/<id>` · 🔒 `DELETE /api/seller/listings/<id>` |

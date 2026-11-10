@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>User · Med Equip Exchange</title>
-  <link rel="stylesheet" href="css/style.css?v=profile-4">
+  <link rel="stylesheet" href="css/style.css?v=profile-6">
 </head>
 <body>
   <header>
@@ -33,10 +33,27 @@
         </div>
       </form>
       <p id="profile-status" role="status" hidden></p>
-      <a class="button" href="orders.html">See previous orders</a>
+      <div class="profile-footer">
+        <a class="button" href="orders.html">See previous orders</a>
+        <button id="delete-account" class="danger" type="button">Delete Account</button>
+      </div>
     </section>
+    <dialog id="delete-dialog" aria-labelledby="delete-title" aria-describedby="delete-description">
+      <h2 id="delete-title">Delete account?</h2>
+      <p id="delete-description">This permanently removes your personal information, balance, and access to this account. Existing order and rental history will show Deleted User.</p>
+      <form id="delete-form">
+        <label for="delete-password">Confirm your password:
+          <input id="delete-password" type="password" required autocomplete="current-password">
+        </label>
+        <p id="delete-error" class="banner error" role="alert" hidden></p>
+        <div class="profile-actions">
+          <button id="confirm-delete" class="danger" type="submit">Delete Account</button>
+          <button id="cancel-delete" class="secondary" type="button">Cancel</button>
+        </div>
+      </form>
+    </dialog>
   </main>
   <script src="js/api.js?v=user-flow-1"></script>
-  <script src="js/user.js?v=profile-5"></script>
+  <script src="js/user.js?v=profile-6"></script>
 </body>
 </html>

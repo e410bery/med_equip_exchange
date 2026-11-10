@@ -114,6 +114,15 @@ tr.has-problem td { background: var(--warn-bg); }
 #profile-form label { display: grid; gap: 0.4rem; font-weight: 700; }
 #profile-form input { width: 100%; font-weight: 400; }
 .profile-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.profile-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+button.danger { background: #b42318; border-color: #b42318; color: white; }
+button.danger:hover { background: #912018; border-color: #912018; }
+#delete-dialog { max-width: 480px; width: calc(100% - 2rem); padding: 2rem; border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+#delete-dialog::backdrop { background: rgb(0 0 0 / 40%); }
+#delete-title { margin-top: 0; }
+#delete-form { display: grid; gap: 1.25rem; }
+#delete-form label { display: grid; gap: 0.5rem; font-weight: 700; }
+#delete-password { width: 100%; }
 .profile-balance { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
 .button-small { padding: 0.3rem 0.75rem; font-size: 0.9rem; }
 .funds-card { max-width: 480px; }

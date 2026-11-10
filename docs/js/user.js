@@ -86,4 +86,43 @@ async function loadProfile() {
   }
 }
 
+const deleteDialog = document.getElementById("delete-dialog");
+const deleteForm = document.getElementById("delete-form");
+const deletePassword = document.getElementById("delete-password");
+const deleteError = document.getElementById("delete-error");
+const confirmDelete = document.getElementById("confirm-delete");
+const cancelDelete = document.getElementById("cancel-delete");
+let deletingAccount = false;
+
+document.getElementById("delete-account").addEventListener("click", () => {
+  deleteForm.reset();
+  deleteError.hidden = true;
+  deleteDialog.showModal();
+  deletePassword.focus();
+});
+cancelDelete.addEventListener("click", () => deleteDialog.close());
+deleteDialog.addEventListener("cancel", (event) => {
+  if (deletingAccount) event.preventDefault();
+});
+deleteDialog.addEventListener("close", () => deleteForm.reset());
+deleteForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (deletingAccount || !deleteForm.reportValidity()) return;
+  deletingAccount = true;
+  confirmDelete.disabled = cancelDelete.disabled = deletePassword.disabled = true;
+  confirmDelete.textContent = "Deleting...";
+  deleteError.hidden = true;
+  try {
+    await api("/api/me", { method: "DELETE", body: { password: deletePassword.value } });
+    location.href = "/docs/login.html";
+  } catch (err) {
+    deleteError.textContent = err.message;
+    deleteError.hidden = false;
+  } finally {
+    deletingAccount = false;
+    confirmDelete.disabled = cancelDelete.disabled = deletePassword.disabled = false;
+    confirmDelete.textContent = "Delete Account";
+  }
+});
+
 loadProfile();
