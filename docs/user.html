@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css?v=profile-4">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a><a href="user.html" aria-current="page">User</a></nav>
+    <div id="account"></div>
+  </header>
+  <main class="profile-page">
+    <h1>User profile</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <p id="loading" class="muted" role="status">Loading your profile...</p>
+    <section id="profile" class="card" hidden>
+      <button id="edit-profile" class="profile-edit" type="button" aria-label="Edit profile" title="Edit profile" aria-expanded="false" aria-controls="profile-form">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m14 5 5 5"/></svg>
+      </button>
+      <h2 id="user-name"></h2>
+      <dl id="profile-info" class="profile-info"></dl>
+      <form id="profile-form" hidden>
+        <label>Full name: <input name="full_name" required maxlength="255" autocomplete="name"></label>
+        <label>Email: <input name="email" type="email" required maxlength="255" autocomplete="email"></label>
+        <label>Organization: <input name="organization" maxlength="255" autocomplete="organization"></label>
+        <label>Address: <input name="address" required maxlength="500" autocomplete="street-address"></label>
+        <div class="profile-actions">
+          <button id="save-profile" type="submit">Save changes</button>
+          <button id="cancel-profile" class="secondary" type="button">Cancel</button>
+        </div>
+      </form>
+      <p id="profile-status" role="status" hidden></p>
+      <a class="button" href="orders.html">See previous orders</a>
+    </section>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/user.js?v=profile-4"></script>
+</body>
+</html>
