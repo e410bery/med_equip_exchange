@@ -13,7 +13,7 @@ function renderProfile(user) {
       ["Organization", user.organization || "Not provided"],
       ["Address", user.address || "Not provided"],
       ["Balance", el("span", { class: "profile-balance" }, money(user.balance),
-        el("a", { class: "button button-small", href: "add-funds.html" }, "Add funds"))],
+        el("a", { class: "button button-small", href: "add_funds.html" }, "Add funds"))],
       ["Member since", new Date(user.created_at).toLocaleDateString()],
     ];
     document.getElementById("profile-info").replaceChildren(

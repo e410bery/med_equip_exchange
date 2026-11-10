@@ -3,7 +3,7 @@
 
 async function api(
   path,
-  { method = "GET", body } = {}
+  { method = "GET", body, redirectOnUnauthorized = true } = {}
 ) {
   const headers = {};
 
@@ -35,7 +35,7 @@ async function api(
     if (
       response.status === 401 &&
       path !== "/api/login" &&
-      path !== "/api/me"
+      redirectOnUnauthorized
     ) {
       goToLogin();
     }
@@ -118,6 +118,10 @@ function showError(message) {
 
 
 async function setUpHeader() {
+  const nav = document.querySelector("header nav");
+  if (nav && !nav.querySelector('a[href$="user.html"]')) {
+    nav.append(el("a", { href: "/docs/user.html" }, "User"));
+  }
   const slot = document.getElementById("account");
 
   if (!slot) {
@@ -134,7 +138,7 @@ async function setUpHeader() {
   );
 
   try {
-    const user = await api("/api/me");
+    const user = await api("/api/me", { redirectOnUnauthorized: false });
 
     const logout = el(
       "a",
@@ -150,7 +154,7 @@ async function setUpHeader() {
           method: "POST",
         });
 
-        location.href = "/";
+        location.href = "/docs/index.html";
       } catch (err) {
         showError(err.message);
       }
