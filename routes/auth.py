@@ -5,7 +5,7 @@ from flask import Blueprint, g, jsonify, request, session
 from psycopg.errors import UniqueViolation
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from db import execute, query_one
+from db import execute, query_one, transaction
 from helpers import ApiError, body, login_required, money_field, text_field
 
 bp = Blueprint("auth", __name__, url_prefix="/api")
@@ -18,7 +18,11 @@ def load_user():
     g.user = None
     user_id = session.get("user_id")
     if user_id is not None and request.endpoint != "static":
-        g.user = query_one(f"SELECT {PROFILE_COLUMNS} FROM users WHERE id = %s", (user_id,))
+        # Empty password hashes mark anonymized accounts and invalidate old sessions.
+        g.user = query_one(
+            f"SELECT {PROFILE_COLUMNS} FROM users WHERE id = %s AND password_hash <> ''",
+            (user_id,),
+        )
         if g.user is None:
             session.clear()
 
@@ -64,7 +68,7 @@ def login():
     email = text_field(data, "email")
     password = text_field(data, "password")
     row = query_one("SELECT id, password_hash FROM users WHERE LOWER(email) = LOWER(%s)", (email,))
-    if row is None or not check_password_hash(row["password_hash"], password):
+    if row is None or not row["password_hash"] or not check_password_hash(row["password_hash"], password):
         raise ApiError("incorrect email or password", 401)
     session.clear()
     session["user_id"] = row["id"]
@@ -108,6 +112,50 @@ def update_profile():
     except UniqueViolation:
         raise ApiError("an account with that email already exists", 409)
     return jsonify(user)
+
+
+@bp.delete("/me")
+@login_required
+def delete_account():
+    """Delete an account, retaining a placeholder ID if there are dependencies."""
+    password = text_field(body(), "password")
+    user_id = g.user["id"]
+    with transaction():
+        user = query_one(
+            "SELECT password_hash FROM users WHERE id = %s FOR UPDATE",
+            (user_id,),
+        )
+        if user is None or not check_password_hash(user["password_hash"], password):
+            raise ApiError("current password is incorrect", 403)
+        execute("DELETE FROM orders WHERE buyer_id = %s AND placed_at IS NULL", (user_id,))
+        execute("DELETE FROM item_reviews WHERE reviewer_id = %s", (user_id,))
+        execute("DELETE FROM seller_reviews WHERE reviewer_id = %s", (user_id,))
+        execute("UPDATE items SET is_active = FALSE WHERE seller_id = %s", (user_id,))
+        dependencies = query_one(
+            """
+            SELECT EXISTS (
+                SELECT 1 FROM items WHERE seller_id = %(id)s
+                UNION ALL SELECT 1 FROM orders WHERE buyer_id = %(id)s
+                UNION ALL SELECT 1 FROM rentals WHERE renter_id = %(id)s
+                UNION ALL SELECT 1 FROM seller_reviews WHERE seller_id = %(id)s
+            ) AS found
+            """,
+            {"id": user_id},
+        )
+        if dependencies["found"]:
+            execute(
+                """
+                UPDATE users
+                SET full_name = 'Deleted User', email = %s,
+                    password_hash = '', organization = NULL, address = '', balance = 0
+                WHERE id = %s
+                """,
+                (f"deleted-user-{user_id}", user_id),
+            )
+        else:
+            execute("DELETE FROM users WHERE id = %s", (user_id,))
+    session.clear()
+    return jsonify(ok=True)
 
 
 @bp.post("/me/password")
