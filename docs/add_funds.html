@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add funds · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css?v=funds-3">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a><a href="user.html">User</a></nav>
+    <div id="account"></div>
+  </header>
+  <main class="profile-page">
+    <h1>Add funds</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <p id="loading" class="muted" role="status">Loading your balance...</p>
+    <section class="card funds-card">
+      <p id="current-balance" hidden></p>
+      <form id="funds-form" hidden novalidate>
+        <label for="amount">Amount (USD):
+          <input id="amount" name="amount" type="number" min="0" max="100000" step="10" inputmode="decimal" placeholder="0.00" required>
+        </label>
+        <div class="profile-actions">
+          <button id="confirm-funds" type="submit">Confirm</button>
+          <button id="cancel-funds" type="button" class="secondary">Cancel</button>
+        </div>
+      </form>
+      <p id="funds-status" role="status" hidden></p>
+      <a id="back-to-profile" href="user.html" hidden>Back to user profile</a>
+    </section>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/add-funds.js?v=funds-4"></script>
+</body>
+</html>

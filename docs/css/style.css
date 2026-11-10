@@ -105,4 +105,34 @@ tr.has-problem td { background: var(--warn-bg); }
 .summary dd { margin: 0; text-align: right; }
 .summary .total { font-weight: 700; font-size: 1.1rem; }
 .negative { color: var(--error-text); font-weight: 600; }
+.profile-page { max-width: 800px; }
+#profile { padding: 2rem; position: relative; }
+#user-name { margin: 0 2.5rem 1.5rem 0; }
+.profile-edit { position: absolute; top: 1rem; right: 1rem; padding: 0.5rem; line-height: 0; background: white; color: var(--primary); border-color: var(--border); }
+.profile-edit:hover { background: var(--bg); }
+#profile-form:not([hidden]) { display: grid; gap: 1.25rem; margin-bottom: 1.75rem; }
+#profile-form label { display: grid; gap: 0.4rem; font-weight: 700; }
+#profile-form input { width: 100%; font-weight: 400; }
+.profile-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.profile-balance { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.button-small { padding: 0.3rem 0.75rem; font-size: 0.9rem; }
+.funds-card { max-width: 480px; }
+#funds-form:not([hidden]) { display: grid; gap: 1.25rem; }
+#funds-form label { display: grid; gap: 0.5rem; font-weight: 700; }
+#funds-form input { width: 100%; }
+#amount::-webkit-inner-spin-button { opacity: 1; }
+.profile-info { margin: 0 0 1.75rem; }
+.profile-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+.profile-row:first-child { border-top: 1px solid var(--border); }
+.profile-info dt { font-weight: 700; }
+.profile-info dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.order-list { list-style: none; padding: 0; display: grid; gap: 1rem; }
+.order-list > li { list-style: none; }
+.order-list h2 { margin-top: 0; }
+header a[aria-current="page"] { color: var(--primary); font-weight: 700; }
+@media (max-width: 600px) {
+  header { flex-wrap: wrap; gap: 0.75rem; }
+  #profile { padding: 1.25rem; }
+  .profile-row { grid-template-columns: 1fr; gap: 0.35rem; }
+}
 .summary .button { width: 100%; text-align: center; margin-top: 0.5rem; }

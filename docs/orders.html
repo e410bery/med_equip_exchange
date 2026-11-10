@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Previous orders · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css?v=orders-2">
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html">Med Equip Exchange</a>
+    <nav><a href="index.html">Browse</a><a href="cart.html">Cart</a><a href="user.html">User</a></nav>
+    <div id="account"></div>
+  </header>
+  <main>
+    <p><a href="user.html">Back to user profile</a></p>
+    <h1>Previous orders</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <p id="loading" class="muted" role="status">Loading your orders...</p>
+    <p id="empty" class="card" hidden>You haven't placed any orders yet. <a href="index.html">Browse equipment</a></p>
+    <ul id="orders" class="order-list" role="list" aria-label="Previous orders"></ul>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/orders.js"></script>
+</body>
+</html>
