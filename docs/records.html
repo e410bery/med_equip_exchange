@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maintenance &amp; Certifications · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+      <a href="/docs/seller.html">Sell</a>
+    </nav>
+
+    <div id="account"></div>
+  </header>
+
+  <!-- Open for one listing with records.html?item_id=<id>; without it, the first listing is shown. -->
+  <main>
+    <p><a href="seller.html">← Seller dashboard</a></p>
+    <h1>Maintenance &amp; Certifications</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <div id="notice" class="banner success" role="status" hidden></div>
+    <p id="loading" class="muted" role="status">Loading your listings…</p>
+    <p id="no-listings" class="card" hidden>You have no listings yet, so there are no records to manage.</p>
+
+    <!-- Alerts across all of the seller's active listings (GET /api/seller/alerts) -->
+    <section id="alerts" class="card stack-gap" hidden>
+      <h2>Needs attention</h2>
+      <ul id="alert-list" class="alert-list"></ul>
+    </section>
+
+    <div id="records" hidden>
+      <section class="card stack-gap">
+        <label class="listing-picker">Listing
+          <select id="listing-select"></select>
+        </label>
+        <p id="listing-meta" class="muted"></p>
+      </section>
+
+      <section class="card stack-gap">
+        <h2>Maintenance history</h2>
+        <div id="maintenance-table"></div>
+
+        <form id="maintenance-form" class="record-form" data-kind="maintenance">
+          <h3>Add maintenance record</h3>
+          <label>Date performed <input name="performed_on" type="date" required></label>
+          <label>Performed by <input name="performed_by" maxlength="255" placeholder="Technician or company"></label>
+          <label class="wide">Description <textarea name="description" rows="2" required placeholder="e.g. Annual calibration, battery replaced"></textarea></label>
+          <label>Next service due <input name="next_due" type="date"></label>
+          <div class="form-actions wide">
+            <button type="submit">Add record</button>
+            <button type="button" class="secondary cancel-edit" hidden>Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card stack-gap">
+        <h2>Certifications</h2>
+        <div id="certifications-table"></div>
+
+        <form id="certifications-form" class="record-form" data-kind="certifications">
+          <h3>Add certification</h3>
+          <label>Certification <input name="name" maxlength="255" required placeholder="e.g. FDA 510(k) clearance"></label>
+          <label>Issuer <input name="issuer" maxlength="255" required placeholder="e.g. FDA"></label>
+          <label>Issued on <input name="issued_on" type="date" required></label>
+          <label>Expires on <input name="expires_on" type="date" required></label>
+          <div class="form-actions wide">
+            <button type="submit">Add certification</button>
+            <button type="button" class="secondary cancel-edit" hidden>Cancel</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/records.js"></script>
+</body>
+</html>

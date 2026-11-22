@@ -145,3 +145,36 @@ header a[aria-current="page"] { color: var(--primary); font-weight: 700; }
   .profile-row { grid-template-columns: 1fr; gap: 0.35rem; }
 }
 .summary .button { width: 100%; text-align: center; margin-top: 0.5rem; }
+
+/* ---------- Checkout, order detail, maintenance & certifications ---------- */
+.banner.success { background: #e6f4ea; color: #1e6b34; }
+.small { font-size: 0.85rem; }
+.stack { display: grid; gap: 1.5rem; }
+.stack-gap { margin-bottom: 1.5rem; }
+main > .card + .card, #order > .card { margin-bottom: 1.5rem; }
+address { font-style: normal; }
+.summary button { width: 100%; margin-top: 0.5rem; }
+tfoot td { border-bottom: none; }
+.order-summary { display: grid; grid-template-columns: 140px 1fr; gap: 0.5rem 1rem; margin: 0; }
+.order-summary dt { color: var(--muted); }
+.order-summary dd { margin: 0; }
+.badge { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+.badge.ok { background: #e6f4ea; color: #1e6b34; }
+.badge.pending { background: var(--warn-bg); color: var(--warn-text); }
+.badge.bad { background: var(--error-bg); color: var(--error-text); }
+.alert-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.listing-picker { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; }
+.listing-picker select { flex: 1; max-width: 480px; font-weight: 400; }
+#listing-meta { margin: 0.5rem 0 0; }
+.record-form { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.record-form h3 { grid-column: 1 / -1; margin: 0; }
+.record-form label { display: grid; gap: 0.3rem; font-weight: 600; font-size: 0.9rem; }
+.record-form .wide { grid-column: 1 / -1; }
+.record-form input, .record-form textarea { width: 100%; font: inherit; font-weight: 400; }
+.record-form textarea { padding: 0.45rem 0.6rem; border: 1px solid var(--border); border-radius: 6px; resize: vertical; }
+.record-form.is-editing { background: #f0f7fc; border-radius: 6px; padding: 1.25rem; }
+.form-actions { display: flex; gap: 0.75rem; }
+tr.editing td { background: #f0f7fc; }
+td.actions { white-space: nowrap; text-align: right; }
+.pre-wrap { white-space: pre-wrap; }
+@media (max-width: 600px) { .record-form { grid-template-columns: 1fr; } }

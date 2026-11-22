@@ -39,6 +39,9 @@ document.getElementById("login-form")
           "/docs/user.html",
           "/docs/orders.html",
           "/docs/add_funds.html",
+          "/docs/checkout.html",
+          "/docs/order.html",
+          "/docs/records.html",
         ]);
 
         if (
