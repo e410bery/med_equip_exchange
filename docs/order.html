@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+    </nav>
+
+    <div id="account"></div>
+  </header>
+
+  <!-- Order detail. Also the order confirmation: checkout redirects here with ?placed=1. -->
+  <main>
+    <p><a href="orders.html">← All orders</a></p>
+    <div id="confirmation" class="banner success" role="status" hidden></div>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <p id="loading" class="muted" role="status">Loading order…</p>
+
+    <div id="order" hidden>
+      <h1 id="order-title"></h1>
+      <section class="card">
+        <dl id="order-summary" class="order-summary"></dl>
+      </section>
+      <section class="card">
+        <h2>Items</h2>
+        <div id="order-lines"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/order.js"></script>
+</body>
+</html>
