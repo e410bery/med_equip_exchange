@@ -8,14 +8,39 @@ Video: https://drive.google.com/file/d/1YdAe6o2kRMBZMZPWuEQ7FyEuWx5KVpFd/view?us
 What each of us did since Milestone 2, and where to find it
 ------------------------------------------------------------
 
-Colin Zeng - Cart
+Colin Zeng - Cart, checkout, order details, and maintenance/certification records
   Expanded the schema and seed data and built the Flask API for the
-  project's features. Built the shopping cart page.
+  project's features. Built these pages:
+  - Shopping cart: change quantities, remove items, and see stock and
+    balance warnings before checkout.
+  - Checkout and order confirmation: review the shipping address, items,
+    and balance, then place the order. Checkout is all-or-nothing, and
+    the page explains why it's blocked (stock problems or low balance).
+  - Order details: each item's price paid and fulfillment status,
+    linked from the previous orders page.
+  - Maintenance and certification management for sellers: add, edit,
+    and delete records for each listing, with alerts for expired or
+    expiring certifications and overdue maintenance. Open it for a
+    listing with docs/records.html?item_id=<id>.
   Endpoints: routes/shop.py
     GET    /api/cart                   (view_cart)
     PATCH  /api/cart/items/<item_id>   (update_cart_line)
     DELETE /api/cart/items/<item_id>   (remove_from_cart)
-  Frontend: docs/cart.html, docs/js/cart.js, docs/js/api.js, docs/css/style.css
+    POST   /api/checkout               (checkout)
+    GET    /api/orders/<order_id>      (order_detail)
+  Endpoints: routes/seller.py
+    GET    /api/seller/listings/<id>/records          (list_records)
+    POST   /api/seller/listings/<id>/maintenance      (add_record)
+    POST   /api/seller/listings/<id>/certifications   (add_record)
+    PUT    /api/seller/maintenance/<id>               (correct_record)
+    PUT    /api/seller/certifications/<id>            (correct_record)
+    DELETE /api/seller/maintenance/<id>               (delete_record)
+    DELETE /api/seller/certifications/<id>            (delete_record)
+    GET    /api/seller/alerts                         (alerts)
+  Frontend: docs/cart.html, docs/js/cart.js, docs/checkout.html,
+            docs/js/checkout.js, docs/order.html, docs/js/order.js,
+            docs/records.html, docs/js/records.js, docs/js/api.js,
+            docs/css/style.css
 
 Zhong Zhao - Browse and search equipment
   Built equipment browsing with keyword search, filters (category,
@@ -52,6 +77,7 @@ Ben Goihman - Seller dashboard
 Running locally
 ---------------
   pip install -r requirements.txt
-  python app.py
+  python app.py      (run from the project root, not docs/)
+  Then open http://127.0.0.1:5000/ - Flask serves both the API and the pages.
   .env needs DATABASE_URL and SECRET_KEY (see .env.example).
   Sample login: labsupply@example.com / password123

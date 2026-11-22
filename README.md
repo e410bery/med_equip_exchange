@@ -17,6 +17,8 @@ Designed page-by-page visuals for "Order Confirmation", "My Orders", "Order Deta
   for development and testing.
 - Expanded the database schema by adding tables/attributes to support
   additional features.
+- Built the Shopping Cart, Checkout / Order Confirmation, and Order Details
+  pages, and the sellers' Maintenance and Certification Management page.
 
 # Ben Goihman
 - Set up the team's hosted PostgreSQL database on Neon and shared access
@@ -32,6 +34,8 @@ python run_sql.py db/create.sql
 python run_sql.py db/seed.sql
 python app.py
 ```
+Run `python app.py` from the project root (not `docs/`), then open http://127.0.0.1:5000/.
+Flask serves the pages in `docs/` at `/docs/...` as well as the API, so no second server is needed.
 `.env` needs `DATABASE_URL` and `SECRET_KEY` (see `.env.example`).
 `db/create.sql` drops and rebuilds every table, and `db/seed.sql` wipes and reloads
 the sample data, so both reset the shared database for the whole team.
@@ -53,7 +57,6 @@ All routes return JSON. Logging in sets a session cookie, so requests that need
 a user (marked 🔒) must send cookies (`fetch(url, {credentials: "include"})`).
 Request bodies can be JSON or form data. Errors look like `{"error": "..."}`.
 Money is returned as strings like `"189.99"`; dates as `"2026-11-03"`.
-`GET /` lists every route.
 
 | Feature | Route |
 |---|---|
@@ -69,4 +72,5 @@ Money is returned as strings like `"189.99"`; dates as `"2026-11-03"`.
 | X2 alerts | 🔒 `GET /api/seller/alerts` · 🔒 `GET /api/seller/dashboard` |
 | X3 compare | `GET /api/compare?ids=1,2,3` (2–4 items) |
 | X4 analytics | 🔒 `GET /api/seller/analytics?months=12` (monthly sales, top items, turnover) |
+| Pages | Cart `/docs/cart.html` · Checkout `/docs/checkout.html` (redirects to the order page on success) · Order details `/docs/order.html?id=<order_id>` (add `&placed=1` for the confirmation banner) · Maintenance & certifications `/docs/records.html?item_id=<listing_id>` |
 | Seller tools | 🔒 `GET /api/seller/customers` · 🔒 `GET /api/seller/reviews` · 🔒 `POST /api/seller/orders/<order_id>/fulfill` · 🔒 `POST /api/seller/listings/<id>/restock` `{amount}` (page: `/docs/seller.html`) |
