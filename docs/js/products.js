@@ -35,23 +35,6 @@ function node(tag, text, className) {
 }
 
 
-async function api(path) {
-  const response = await fetch(path, {
-    credentials: "same-origin",
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.error || `Request failed (${response.status})`
-    );
-  }
-
-  return data;
-}
-
-
 function parameters() {
   const params = new URLSearchParams(
     new FormData(form)
