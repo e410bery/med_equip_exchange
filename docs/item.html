@@ -21,14 +21,27 @@
     <div id="account"></div>
   </header>
 
-  <!-- Placeholder so items can be added to the cart; replace with the full Equipment Listing Detail design. -->
-  <main>
-    <div id="error" class="banner error" hidden></div>
-    <div id="added" class="banner warn" hidden></div>
-    <div id="item" class="card"></div>
-  </main>
+
+  <main class="stack">
+  <div id="error" class="banner error" role="alert" hidden></div>
+  <div id="added" class="banner success" role="status" hidden></div>
+
+  <p>
+    <a href="/products">Browse equipment</a>
+    <a id="back-order" hidden>Return to order details</a>
+  </p>
+
+  <section id="item" class="card"></section>
+  <section id="records" class="card"></section>
+  <section id="reviews" class="card"></section>
+  <section id="related" class="card"></section>
+</main>
 
   <script src="js/api.js"></script>
   <script src="js/item.js"></script>
 </body>
 </html>
+
+<script src="js/api.js"></script>
+<script src="js/reviews.js"></script>
+<script src="js/item.js"></script>
