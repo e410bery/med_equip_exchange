@@ -251,8 +251,12 @@ async function showDetail(id) {
 
     heading.textContent = item.name;
 
+    const fullPage = node("a", "Open full item page and reviews");
+    fullPage.href = `/docs/item.html?id=${item.id}`;
+
     content.replaceChildren(
       heading,
+      fullPage,
 
       node(
         "p",
