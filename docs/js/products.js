@@ -123,7 +123,7 @@ async function load() {
 
   try {
     const data = await api(
-      `/api/products?${params}`
+      `/api/items?${params}`
     );
 
     // Ignore an older request that finished after a newer one.
