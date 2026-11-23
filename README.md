@@ -3,7 +3,11 @@ CompSci316 Project
 GitHub: https://github.com/e410bery/med_equip_exchange
 
 # Zhong Zhao
-Designed page-by-page visuals for "Home", "Log In", "Register", "Profile and Organization Settings", "Browse Equipment / Search Results", "Equipment Listing Detail", "Seller Profile", "Shopping Cart", and "Checkout".
+MS2: Designed page-by-page visuals for "Home", "Log In", "Register", "Profile and Organization Settings", "Browse Equipment / Search Results", "Equipment Listing Detail", "Seller Profile", "Shopping Cart", and "Checkout".
+
+MS3: Implemented the products browsing page and a SQL-backed API supporting keyword search, combined filters, price sorting, and pagination. Users can enter an integer k to display the top k most expensive listings, view equipment specifications, maintenance history, and certifications, and add items to their cart after logging in. The page uses shared website styling and connects to the homepage and cart through common navigation.
+
+MS4: Implemented equipment review creation, editing, and deletion, expanded item details to display specifications and records, and added public seller profiles with seller reviews. Added selection and side-by-side comparison for 2–4 items. Consolidated equipment search under /api/items while preserving existing filters and validation.
 
 # Ella Fortenbery
 Designed page-by-page visuals for "Order Confirmation", "My Orders", "Order Details", "Write / Edit Review", "Seller Dashboard", "My Listings", "Create / Edit Listing", "Maintenance and Certification Management", "Seller Orders / Fulfillment".
@@ -30,8 +34,13 @@ Designed page-by-page visuals for "Order Confirmation", "My Orders", "Order Deta
 ```
 source .venv/bin/activate
 pip install -r requirements.txt
+
+
+Only use the following commands if resetting your database:
 python run_sql.py db/create.sql
 python run_sql.py db/seed.sql
+
+
 python app.py
 ```
 Run `python app.py` from the project root (not `docs/`), then open http://127.0.0.1:5000/.
@@ -61,7 +70,7 @@ Money is returned as strings like `"189.99"`; dates as `"2026-11-03"`.
 | Feature | Route |
 |---|---|
 | B1 accounts | `POST /api/register` `{email, password, full_name, address, organization?}` · `POST /api/login` `{email, password}` · `POST /api/logout` · 🔒 `GET /api/me` · 🔒 `PATCH /api/me` `{full_name?, email?, address?, organization?}` · 🔒 `DELETE /api/me` `{password}` · 🔒 `POST /api/me/password` `{current_password, new_password}` · 🔒 `POST /api/me/balance` `{amount}` |
-| B2 browse | `GET /api/items?q=&category_id=&manufacturer_id=&seller_id=&condition=&location=&min_price=&max_price=&in_stock=1&rentable=1&sort=name\|price_asc\|price_desc\|newest\|rating&page=&per_page=` · `GET /api/filters` (dropdown options) |
+| B2 browse | `GET /api/items?q=&category_id=&manufacturer_id=&seller_id=&condition=&location=&min_price=&max_price=&in_stock=1&rentable=1&sort=name\|price_asc\|price_desc\|newest\|rating&page=&per_page=` · `GET /api/filters` (dropdown options) | certified=1 |
 | B3 detail | `GET /api/items/<id>` (specs, seller, avg rating, reviews, maintenance, certifications, related) · `GET /api/sellers/<id>` |
 | B4 listings | 🔒 `GET /api/seller/listings` · 🔒 `POST /api/seller/listings` · 🔒 `PATCH /api/seller/listings/<id>` · 🔒 `DELETE /api/seller/listings/<id>` |
 | B5 cart | 🔒 `GET /api/cart` · 🔒 `POST /api/cart/items` `{item_id, quantity}` · 🔒 `PATCH /api/cart/items/<item_id>` `{quantity}` · 🔒 `DELETE /api/cart/items/<item_id>` · 🔒 `POST /api/checkout` |

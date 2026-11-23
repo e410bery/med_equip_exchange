@@ -47,7 +47,7 @@ Zhong Zhao - Browse and search equipment
   manufacturer, condition, location, price), sorting, and pagination,
   and connected listings to the cart.
   Endpoint: routes/products.py
-    GET    /api/products
+    GET    /api/items
   Frontend: docs/products.html, docs/js/products.js, docs/css/products.css
 
 Ella Fortenbery - User profile, funds, order history, and account deletion
