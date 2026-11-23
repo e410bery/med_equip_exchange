@@ -96,6 +96,12 @@ def search_items(args):
         if value is not None:
             where.append(f"i.price {op} %({key})s")
             params[key] = value
+    if (
+        "min_price" in params
+        and "max_price" in params
+        and params["min_price"] > params["max_price"]
+    ):
+        raise ApiError("Minimum price cannot exceed maximum price")
     if args.get("in_stock") in ("1", "true"):
         where.append("i.quantity > 0")
     if args.get("rentable") in ("1", "true"):
