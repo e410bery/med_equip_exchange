@@ -41,7 +41,13 @@ function renderLines(order) {
   const rows = order.lines.map((line) =>
     el("tr", {},
       el("td", {}, el("a", { href: `item.html?id=${line.item_id}` + `&order_id=${order.id}#reviews`}, line.name)),
-      el("td", {}, line.seller_name),
+      el("td", {}, el("a",
+        {
+          href:
+            `/docs/seller_profile.html?id=${line.seller_id}` +
+            `&order_id=${order.id}`,
+        },
+        line.seller_name)),
       el("td", { class: "num" }, line.quantity),
       el("td", { class: "num" }, money(line.unit_price)),
       el("td", { class: "num" }, money(line.line_total)),

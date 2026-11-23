@@ -42,6 +42,7 @@ document.getElementById("login-form")
           "/docs/checkout.html",
           "/docs/order.html",
           "/docs/records.html",
+          "/docs/seller_profile.html",
         ]);
 
         if (
