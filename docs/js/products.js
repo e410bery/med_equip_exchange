@@ -10,6 +10,42 @@ let pages = 0;
 let requestNumber = 0;
 let detailNumber = 0;
 
+const compareIds = new Set(
+  (sessionStorage.getItem("compareIds") || "")
+    .split(",")
+    .filter((id) => /^[1-9]\d*$/.test(id))
+    .slice(0, 4)
+);
+
+function updateComparison() {
+  sessionStorage.setItem("compareIds", [...compareIds].join(","));
+
+  document.getElementById("compare-count").textContent =
+    `${compareIds.size} items selected. Choose 2–4.`;
+
+  document.getElementById("compare-open").disabled =
+    compareIds.size < 2 || compareIds.size > 4;
+}
+
+document.getElementById("compare-open").addEventListener("click", () => {
+  const params = new URLSearchParams({
+    ids: [...compareIds].join(","),
+  });
+
+  location.href = `/docs/compare.html?${params}`;
+});
+
+document.getElementById("compare-clear").addEventListener("click", () => {
+  compareIds.clear();
+
+  for (const checkbox of document.querySelectorAll(".compare-choice")) {
+    checkbox.checked = false;
+  }
+
+  updateComparison();
+});
+
+updateComparison();
 
 function currency(value) {
   return Number(value).toLocaleString("en-US", {
@@ -32,23 +68,6 @@ function node(tag, text, className) {
   }
 
   return element;
-}
-
-
-async function api(path) {
-  const response = await fetch(path, {
-    credentials: "same-origin",
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.error || `Request failed (${response.status})`
-    );
-  }
-
-  return data;
 }
 
 
@@ -199,6 +218,36 @@ async function load() {
         ),
 
         details
+      );
+
+      const compareChoice = el("input", {
+        type: "checkbox",
+        class: "compare-choice",
+      });
+
+      compareChoice.checked = compareIds.has(String(item.id));
+
+      compareChoice.addEventListener("change", () => {
+        const id = String(item.id);
+
+        if (compareChoice.checked) {
+          if (compareIds.size >= 4) {
+            compareChoice.checked = false;
+            document.getElementById("compare-count").textContent =
+              "You can compare at most four items. Clear or deselect an item.";
+            return;
+          }
+
+          compareIds.add(id);
+        } else {
+          compareIds.delete(id);
+        }
+
+        updateComparison();
+      });
+
+      card.append(
+        el("label", {}, compareChoice, " Compare this item")
       );
 
       results.append(card);

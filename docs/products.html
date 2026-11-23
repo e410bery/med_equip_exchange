@@ -22,6 +22,8 @@
     href="/products-assets/css/products.css"
   >
 
+  <script src="/docs/js/api.js" defer></script>
+
   <script
     src="/products-assets/js/products.js"
     defer
@@ -45,6 +47,7 @@
         Cart
       </a>
     </nav>
+    <div id="account"></div>
   </header>
 
   <main>
@@ -57,6 +60,16 @@
       maintenance and certification records.
     </p>
 
+    <div class="card">
+      <p id="compare-count" role="status">0 items selected.</p>
+      <button id="compare-open" type="button" disabled>
+        Compare selected items
+      </button>
+      <button id="compare-clear" type="button" class="secondary">
+        Clear selection
+      </button>
+    </div>
+    
     <form id="filters">
       <div class="search">
         <label>
