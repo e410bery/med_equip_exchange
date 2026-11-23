@@ -107,6 +107,26 @@ def search_items(args):
     if args.get("rentable") in ("1", "true"):
         where.append("i.rental_units > 0")
 
+    certified = choice_field(
+        args,
+        "certified",
+        ("0", "1"),
+        required=False,
+    )
+
+    if certified == "1":
+        where.append(
+            """
+            EXISTS (
+                SELECT 1
+                FROM certifications ce
+                WHERE ce.item_id = i.id
+                  AND ce.issued_on <= CURRENT_DATE
+                  AND ce.expires_on >= CURRENT_DATE
+            )
+            """
+        )
+
     sort = choice_field(args, "sort", list(SORTS), required=False) or "name"
     page = int_field(args, "page", required=False, min_value=1) or 1
     per_page = int_field(args, "per_page", required=False, min_value=1, max_value=50) or 12
