@@ -178,3 +178,22 @@ tr.editing td { background: #f0f7fc; }
 td.actions { white-space: nowrap; text-align: right; }
 .pre-wrap { white-space: pre-wrap; }
 @media (max-width: 600px) { .record-form { grid-template-columns: 1fr; } }
+
+/* Reviews and equipment comparison. */
+form.stacked textarea {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+}
+.table-scroll {
+  overflow-x: auto;
+}
+#comparison table {
+  min-width: 650px;
+}
+#comparison td {
+  min-width: 160px;
+  vertical-align: top;
+}
