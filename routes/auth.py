@@ -1,5 +1,6 @@
 """B1: register, log in/out, profile, and balance."""
 from decimal import Decimal
+import re
 
 from flask import Blueprint, g, jsonify, request, session
 from psycopg.errors import UniqueViolation
@@ -37,8 +38,8 @@ def check_password(password):
 def register():
     data = body()
     email = text_field(data, "email", max_len=255).lower()
-    if "@" not in email:
-        raise ApiError("email is not valid")
+    if not re.fullmatch(r"[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+", email):
+        raise ApiError("enter an email like name@example.com")
     password = check_password(data.get("password"))
     try:
         user = query_one(

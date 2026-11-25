@@ -132,6 +132,11 @@ async function setUpHeader() {
   slot.replaceChildren(
     el(
       "a",
+      { href: "/docs/register.html" },
+      "Register"
+    ),
+    el(
+      "a",
       { href: "/docs/login.html" },
       "Log in"
     )
@@ -173,7 +178,7 @@ async function setUpHeader() {
     );
   } catch {
     // Guests receive HTTP 401 from /api/me.
-    // Keep the Log in link visible.
+    // Keep the Log in link and Register button visible.
   }
 }
 
