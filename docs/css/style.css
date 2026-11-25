@@ -37,7 +37,7 @@ header .brand { font-weight: 700; color: var(--primary); text-decoration: none; 
 header nav { display: flex; gap: 1rem; flex: 1; }
 header a { color: var(--text); text-decoration: none; }
 header a:hover { color: var(--primary); }
-#account a { margin-left: 0.5rem; }
+#account { display: flex; align-items: center; gap: 1rem; }
 
 main { max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem; }
 

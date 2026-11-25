@@ -132,13 +132,13 @@ async function setUpHeader() {
   slot.replaceChildren(
     el(
       "a",
-      { href: "/docs/login.html" },
-      "Log in"
+      { href: "/docs/register.html" },
+      "Register"
     ),
     el(
       "a",
-      { href: "/docs/register.html", class: "button" },
-      "Register"
+      { href: "/docs/login.html" },
+      "Log in"
     )
   );
 
