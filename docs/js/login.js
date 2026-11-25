@@ -38,6 +38,7 @@ document.getElementById("login-form")
           "/docs/item.html",
           "/docs/user.html",
           "/docs/orders.html",
+          "/docs/rentals.html",
           "/docs/add_funds.html",
           "/docs/checkout.html",
           "/docs/order.html",

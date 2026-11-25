@@ -91,6 +91,7 @@ function rentalAvailabilityForm(item) {
       });
       result.className = "";
       result.textContent = `Rental #${rental.id} confirmed: ${rental.start_date} through ${rental.end_date}. Total paid: ${money(rental.total_price)}.`;
+      result.append(" ", el("a", { href: "/docs/rentals.html" }, "View my rentals"));
       quotedDates = null;
       book.hidden = true;
       await setUpHeader();
