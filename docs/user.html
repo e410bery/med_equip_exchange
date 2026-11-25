@@ -30,7 +30,16 @@
         <div class="profile-actions">
           <button id="save-profile" type="submit">Save changes</button>
           <button id="cancel-profile" class="secondary" type="button">Cancel</button>
+          <button id="toggle-password" type="button" class="secondary" aria-expanded="false" aria-controls="password-form" hidden>Change password</button>
         </div>
+      </form>
+      <form id="password-form" class="stacked card" hidden>
+        <h3>Change password</h3>
+        <label>Current password <input name="current_password" type="password" required autocomplete="current-password"></label>
+        <label>New password <input name="new_password" type="password" required minlength="8" autocomplete="new-password" aria-describedby="password-help"></label>
+        <small id="password-help" class="muted">Use at least 8 characters.</small>
+        <label>Confirm new password <input name="confirm_password" type="password" required minlength="8" autocomplete="new-password"></label>
+        <button id="save-password" type="submit">Change password</button>
       </form>
       <p id="profile-status" role="status" hidden></p>
       <div class="profile-footer">
@@ -54,6 +63,6 @@
     </dialog>
   </main>
   <script src="js/api.js?v=user-flow-1"></script>
-  <script src="js/user.js?v=profile-6"></script>
+  <script src="js/user.js?v=profile-7"></script>
 </body>
 </html>

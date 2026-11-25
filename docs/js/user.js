@@ -4,6 +4,21 @@ const editButton = document.getElementById("edit-profile");
 const cancelButton = document.getElementById("cancel-profile");
 const saveButton = document.getElementById("save-profile");
 const profileStatus = document.getElementById("profile-status");
+const passwordForm = document.getElementById("password-form");
+const passwordButton = document.getElementById("save-password");
+const passwordToggle = document.getElementById("toggle-password");
+
+passwordToggle.addEventListener("click", () => {
+  const expanded = passwordForm.hidden;
+  passwordForm.hidden = !expanded;
+  passwordToggle.setAttribute("aria-expanded", String(expanded));
+  passwordToggle.textContent = expanded ? "Hide password fields" : "Change password";
+  if (expanded) {
+    passwordForm.elements.current_password.focus();
+  } else {
+    passwordForm.reset();
+  }
+});
 
 function renderProfile(user) {
     currentUser = user;
@@ -24,6 +39,11 @@ function renderProfile(user) {
 
 function setEditing(editing) {
   profileForm.hidden = !editing;
+  passwordToggle.hidden = !editing;
+  passwordToggle.setAttribute("aria-expanded", "false");
+  passwordToggle.textContent = "Change password";
+  passwordForm.hidden = true;
+  passwordForm.reset();
   document.getElementById("profile-info").hidden = editing;
   editButton.hidden = editing;
   editButton.setAttribute("aria-expanded", String(editing));
@@ -57,7 +77,7 @@ profileForm.addEventListener("submit", async (event) => {
     return;
   }
   showError("");
-  saveButton.disabled = cancelButton.disabled = true;
+  saveButton.disabled = cancelButton.disabled = passwordButton.disabled = true;
   saveButton.textContent = "Saving...";
   try {
     const user = await api("/api/me", { method: "PATCH", body });
@@ -69,8 +89,41 @@ profileForm.addEventListener("submit", async (event) => {
   } catch (err) {
     showError(err.message);
   } finally {
-    saveButton.disabled = cancelButton.disabled = false;
+    saveButton.disabled = cancelButton.disabled = passwordButton.disabled = false;
     saveButton.textContent = "Save changes";
+  }
+});
+
+passwordForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (passwordButton.disabled || !passwordForm.reportValidity()) return;
+  showError("");
+  profileStatus.hidden = true;
+  const currentPassword = passwordForm.elements.current_password.value;
+  const newPassword = passwordForm.elements.new_password.value;
+  if (newPassword !== passwordForm.elements.confirm_password.value) {
+    showError("New passwords do not match.");
+    return;
+  }
+  passwordToggle.disabled = passwordButton.disabled = saveButton.disabled = cancelButton.disabled = true;
+  passwordButton.textContent = "Changing...";
+  try {
+    await api("/api/me/password", {
+      method: "POST",
+      body: { current_password: currentPassword, new_password: newPassword },
+    });
+    passwordForm.reset();
+    passwordForm.hidden = true;
+    passwordToggle.setAttribute("aria-expanded", "false");
+    passwordToggle.textContent = "Change password";
+    passwordToggle.focus();
+    profileStatus.textContent = "Password changed.";
+    profileStatus.hidden = false;
+  } catch (err) {
+    showError(err.message);
+  } finally {
+    passwordToggle.disabled = passwordButton.disabled = saveButton.disabled = cancelButton.disabled = false;
+    passwordButton.textContent = "Change password";
   }
 });
 
