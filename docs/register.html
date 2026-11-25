@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">MedEquip Exchange</a>
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+    </nav>
+    <div id="account"></div>
+  </header>
+  <main>
+    <h1>Register</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <form id="register-form" class="stacked card">
+      <label>Full name <input name="full_name" required maxlength="255" autocomplete="name"></label>
+      <label>Email <input name="email" type="email" required maxlength="255" autocomplete="email"></label>
+      <label>Password <input name="password" type="password" required minlength="8" autocomplete="new-password" aria-describedby="password-help"></label>
+      <small id="password-help" class="muted">Use at least 8 characters.</small>
+      <label>Address <input name="address" required maxlength="500" autocomplete="street-address"></label>
+      <label>Organization (optional) <input name="organization" maxlength="255" autocomplete="organization"></label>
+      <button type="submit">Register</button>
+      <p class="muted">Already have an account? <a href="/docs/login.html">Log in</a></p>
+    </form>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
