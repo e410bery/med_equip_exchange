@@ -230,7 +230,9 @@ async function loadItem() {
           : `${item.avg_rating}/5 · ${item.review_count} reviews`
       ),
       purchase,
-      item.is_active && item.rental_units > 0 ? rentalAvailabilityForm(item) : null
+      item.is_active && item.rental_units > 0
+        ? rentalAvailabilityForm(item)
+        : el("p", { class: "muted" }, "Item unavailable to be rented")
     );
 
     const records = document.getElementById("records");

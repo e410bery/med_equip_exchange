@@ -165,10 +165,12 @@ async function load() {
         showDetail(item.id);
       });
 
-      const stockText =
-        item.quantity > 0
-          ? `${item.quantity} available`
-          : "Out of stock";
+      const stockText = item.quantity > 0
+        ? `${item.quantity} available for purchase`
+        : "Unavailable for purchase";
+      const rentalText = item.rental_units > 0
+        ? `${item.rental_units} available for rent`
+        : "Unavailable for rent";
 
       const ratingText =
         item.avg_rating == null
@@ -210,6 +212,7 @@ async function load() {
         ),
 
         node("p", stockText),
+        node("p", rentalText),
 
         node(
           "p",
@@ -319,6 +322,12 @@ async function showDetail(id) {
         `${currency(item.price)} · ` +
         `${item.quantity} in stock · ` +
         `${item.condition} · ${item.location}`
+      ),
+      node(
+        "p",
+        item.is_active && item.rental_units > 0
+          ? `${currency(item.rental_rate)}/day · ${item.rental_units} available for rent`
+          : "Unavailable for rent"
       ),
 
       node(
