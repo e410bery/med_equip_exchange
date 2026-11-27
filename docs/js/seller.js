@@ -4,6 +4,7 @@
 //   GET  /api/seller/orders?status=pending     POST /api/seller/orders/<order_id>/fulfill
 //   POST /api/seller/line-items/<id>/fulfill   (one item of an order)
 //   GET  /api/seller/customers                 GET  /api/seller/reviews
+//   GET  /api/seller/dashboard                 (alert_count for expiring certifications / overdue maintenance)
 
 function table(headers, rows, empty) {
   if (rows.length === 0) return el("p", { class: "muted" }, empty);
@@ -46,6 +47,17 @@ function fulfill(orderId) {
 
 function fulfillLine(lineItemId) {
   return run(() => api(`/api/seller/line-items/${lineItemId}/fulfill`, { method: "POST" }));
+}
+
+function renderAlerts(dashboard) {
+  const banner = document.getElementById("alerts");
+  banner.hidden = dashboard.alert_count === 0;
+  banner.replaceChildren(
+    dashboard.alert_count === 1
+      ? "1 certification or maintenance alert needs attention. "
+      : `${dashboard.alert_count} certification or maintenance alerts need attention. `,
+    el("a", { href: "records.html" }, "View records"),
+  );
 }
 
 function renderListings(listings) {
@@ -127,12 +139,14 @@ function renderReviews(data) {
 
 async function loadAll() {
   try {
-    const [listings, orders, customers, reviews] = await Promise.all([
+    const [listings, orders, customers, reviews, dashboard] = await Promise.all([
       api("/api/seller/listings"),
       api("/api/seller/orders?status=pending"),
       api("/api/seller/customers"),
       api("/api/seller/reviews"),
+      api("/api/seller/dashboard"),
     ]);
+    renderAlerts(dashboard);
     renderListings(listings);
     renderOrders(orders);
     renderCustomers(customers);
