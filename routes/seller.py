@@ -115,6 +115,16 @@ def my_listings():
 @bp.post("/listings")
 def create_listing():
     fields = listing_fields(body(), partial=False)
+    duplicate = query_one(
+        """
+        SELECT id FROM items
+        WHERE seller_id = %s AND is_active AND condition = %s
+          AND LOWER(name) = LOWER(%s) AND LOWER(COALESCE(model, '')) = LOWER(COALESCE(%s, ''))
+        """,
+        (g.user["id"], fields["condition"], fields["name"], fields["model"]),
+    )
+    if duplicate:
+        raise ApiError("you already list this item in this condition; restock that listing instead", 409)
     columns = ", ".join(fields)
     values = ", ".join(f"%({key})s" for key in fields)
     item = save_listing(
