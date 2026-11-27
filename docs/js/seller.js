@@ -2,6 +2,7 @@
 //   GET  /api/seller/listings                  POST /api/seller/listings/<id>/restock {amount}
 //   DELETE /api/seller/listings/<id>           (removes the listing; past orders keep it)
 //   GET  /api/seller/orders?status=pending     POST /api/seller/orders/<order_id>/fulfill
+//   POST /api/seller/line-items/<id>/fulfill   (one item of an order)
 //   GET  /api/seller/customers                 GET  /api/seller/reviews
 
 function table(headers, rows, empty) {
@@ -43,6 +44,10 @@ function fulfill(orderId) {
   return run(() => api(`/api/seller/orders/${orderId}/fulfill`, { method: "POST" }));
 }
 
+function fulfillLine(lineItemId) {
+  return run(() => api(`/api/seller/line-items/${lineItemId}/fulfill`, { method: "POST" }));
+}
+
 function renderListings(listings) {
   const rows = listings.map((item) => {
     const amount = el("input", { class: "cart-qty", type: "number", step: "1", value: "1" });
@@ -75,7 +80,10 @@ function renderOrders(lines) {
       el("td", {}, `#${orderId}`),
       el("td", {}, items[0].placed_at.slice(0, 10)),
       el("td", {}, items[0].buyer_name),
-      el("td", {}, items.map((i) => `${i.quantity} × ${i.name}`).join(", ")),
+      el("td", {}, ...items.map((i) =>
+        el("div", {}, `${i.quantity} × ${i.name} `,
+          el("button", { class: "link", onclick: () => fulfillLine(i.line_item_id) }, "Fulfill item")),
+      )),
       el("td", {}, el("button", { onclick: () => fulfill(orderId) }, "Fulfill order")),
     ),
   );
