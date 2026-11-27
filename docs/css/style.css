@@ -206,3 +206,28 @@ form.stacked textarea {
 
 .bar-cell { width: 45%; }
 .bar { height: 0.9rem; background: var(--primary); border-radius: 3px; }
+
+/* ---------- Polish pass ---------- */
+header { box-shadow: 0 1px 3px rgb(0 0 0 / 6%); }
+@media (min-width: 700px) { header { position: sticky; top: 0; z-index: 10; } }
+header .brand { font-size: 1.15rem; }
+header nav a { padding: 0.25rem 0.5rem; border-radius: 6px; }
+header nav a:hover { background: var(--bg); }
+h1 { font-size: 1.9rem; letter-spacing: -0.01em; }
+.card { box-shadow: 0 1px 2px rgb(0 0 0 / 4%); }
+.card > h2:first-child { margin-top: 0; }
+main > section.card { margin-bottom: 1.5rem; overflow-x: auto; }
+button, .button { transition: background-color 0.15s, border-color 0.15s; }
+button.secondary:hover, .button.secondary:hover { background: #eef5fb; }
+input:focus, select:focus, textarea:focus, button:focus-visible, .button:focus-visible {
+  outline: 2px solid var(--primary); outline-offset: 1px;
+}
+th { text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.75rem; }
+td { vertical-align: middle; }
+tbody tr:hover td { background: #f8fafc; }
+.card.record-form { margin-top: 0; }
+.restock { display: flex; gap: 0.5rem; align-items: center; white-space: nowrap; }
+.row-links { white-space: nowrap; }
+.order-line { display: flex; justify-content: space-between; gap: 1rem; padding: 0.15rem 0; }
+.dashboard-links { flex-wrap: wrap; margin: 0 0 1.5rem; }
+header nav { flex-wrap: wrap; }
