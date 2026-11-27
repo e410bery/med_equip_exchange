@@ -44,6 +44,7 @@ document.getElementById("login-form")
           "/docs/order.html",
           "/docs/records.html",
           "/docs/listing.html",
+          "/docs/analytics.html",
           "/docs/seller_profile.html",
         ]);
 

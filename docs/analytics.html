@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sales Analytics · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+      <a href="/docs/seller.html">Sell</a>
+    </nav>
+
+    <div id="account"></div>
+  </header>
+
+  <main>
+    <p><a href="seller.html">← Seller dashboard</a></p>
+    <h1>Sales Analytics</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+
+    <section class="card stack-gap">
+      <label class="listing-picker">Show the last
+        <select id="months">
+          <option value="3">3 months</option>
+          <option value="6">6 months</option>
+          <option value="12" selected>12 months</option>
+          <option value="24">24 months</option>
+        </select>
+      </label>
+      <p id="totals" class="muted"></p>
+    </section>
+
+    <section class="card stack-gap">
+      <h2>Revenue by month</h2>
+      <div id="sales"></div>
+    </section>
+
+    <section class="card stack-gap">
+      <h2>Best sellers</h2>
+      <div id="top-items"></div>
+    </section>
+
+    <section class="card">
+      <h2>Inventory turnover</h2>
+      <p class="muted">Units sold divided by average stock over the period. Higher means the listing sells through faster.</p>
+      <div id="turnover"></div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/analytics.js"></script>
+</body>
+</html>
