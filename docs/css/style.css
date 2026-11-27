@@ -203,3 +203,6 @@ form.stacked textarea {
   min-width: 160px;
   vertical-align: top;
 }
+
+.bar-cell { width: 45%; }
+.bar { height: 0.9rem; background: var(--primary); border-radius: 3px; }
