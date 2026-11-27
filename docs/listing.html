@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Listing · Med Equip Exchange</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">
+      MedEquip Exchange
+    </a>
+
+    <nav aria-label="Main navigation">
+      <a href="/">Home</a>
+      <a href="/products">Browse equipment</a>
+      <a href="/docs/cart.html">Cart</a>
+      <a href="/docs/seller.html">Sell</a>
+    </nav>
+
+    <div id="account"></div>
+  </header>
+
+  <main>
+    <p><a href="seller.html">← Seller dashboard</a></p>
+    <h1 id="page-title">New listing</h1>
+    <div id="error" class="banner error" role="alert" hidden></div>
+    <p id="loading" class="muted" role="status">Loading…</p>
+
+    <form id="listing-form" class="card record-form" hidden>
+      <label class="wide">Name <input name="name" maxlength="255" required placeholder="e.g. Folding wheelchair"></label>
+      <label>Model <input name="model" maxlength="100" placeholder="e.g. Tracer EX2"></label>
+      <label>Category <select name="category_id" required></select></label>
+      <label>Manufacturer <select name="manufacturer_id"></select></label>
+      <label>Or a new manufacturer <input name="manufacturer_name" maxlength="100" placeholder="Leave blank to use the list"></label>
+      <label>Condition <select name="condition" required></select></label>
+      <label>Location <input name="location" maxlength="100" required placeholder="e.g. Durham, NC"></label>
+      <label>Price <input name="price" type="number" min="0" step="0.01" required></label>
+      <label>Quantity for sale <input name="quantity" type="number" min="0" step="1" required></label>
+      <label class="wide">Description <textarea name="description" rows="3" required></textarea></label>
+      <label class="wide">Specifications <textarea name="specifications" rows="3" placeholder="Optional: size, weight, power, compatibility…"></textarea></label>
+      <label>Rental rate per day <input name="rental_rate" type="number" min="0.01" step="0.01" placeholder="Leave blank if not for rent"></label>
+      <label>Units for rent <input name="rental_units" type="number" min="0" step="1" placeholder="0"></label>
+      <div class="form-actions wide">
+        <button type="submit">Create listing</button>
+        <a class="button secondary" href="seller.html">Cancel</a>
+      </div>
+    </form>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/listing.js"></script>
+</body>
+</html>
