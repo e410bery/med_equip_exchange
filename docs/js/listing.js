@@ -1,8 +1,12 @@
-// New listing page. Backend: routes/catalog.py and routes/seller.py
-//   GET  /api/filters          -> categories, manufacturers, conditions for the dropdowns
-//   POST /api/seller/listings  -> {id}; 409 if you already list the same item in that condition
+// New / edit listing page. Backend: routes/catalog.py and routes/seller.py
+//   GET   /api/filters                -> categories, manufacturers, conditions for the dropdowns
+//   GET   /api/items/<id>             -> current values when editing
+//   POST  /api/seller/listings        -> {id}; 409 if you already list the same item in that condition
+//   PATCH /api/seller/listings/<id>   -> the updated listing
+// Open listing.html to create, or listing.html?item_id=<id> to edit.
 
 const form = document.getElementById("listing-form");
+const itemId = new URLSearchParams(location.search).get("item_id");
 
 function fillSelect(select, options) {
   select.replaceChildren(...options.map(([value, label]) => el("option", { value }, label)));
@@ -28,12 +32,25 @@ function formBody() {
   return data;
 }
 
+function fillFromItem(item) {
+  const f = form.elements;
+  for (const key of ["name", "model", "category_id", "manufacturer_id", "condition", "location",
+    "price", "quantity", "description", "specifications", "rental_rate"]) {
+    f[key].value = item[key] ?? "";
+  }
+  f.rental_units.value = item.rental_units || "";
+  document.title = "Edit Listing · Med Equip Exchange";
+  document.getElementById("page-title").textContent = `Edit ${item.name}`;
+  form.querySelector('button[type="submit"]').textContent = "Save changes";
+}
+
 async function loadForm() {
   try {
     const filters = await api("/api/filters");
     fillSelect(form.elements.category_id, filters.categories.map((c) => [c.id, c.name]));
     fillSelect(form.elements.manufacturer_id, filters.manufacturers.map((m) => [m.id, m.name]));
     fillSelect(form.elements.condition, filters.conditions.map((c) => [c, c]));
+    if (itemId) fillFromItem(await api(`/api/items/${itemId}`));
     form.hidden = false;
   } catch (err) {
     showError(err.message);
@@ -49,7 +66,8 @@ form.addEventListener("submit", async (event) => {
   submit.disabled = true;
   showError("");
   try {
-    await api("/api/seller/listings", { method: "POST", body: formBody() });
+    if (itemId) await api(`/api/seller/listings/${itemId}`, { method: "PATCH", body: formBody() });
+    else await api("/api/seller/listings", { method: "POST", body: formBody() });
     location.href = "seller.html";
   } catch (err) {
     showError(err.message);
