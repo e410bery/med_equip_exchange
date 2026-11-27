@@ -1,5 +1,6 @@
 // Seller Dashboard page. Backend: routes/seller_tools.py and routes/seller.py
 //   GET  /api/seller/listings                  POST /api/seller/listings/<id>/restock {amount}
+//   DELETE /api/seller/listings/<id>           (removes the listing; past orders keep it)
 //   GET  /api/seller/orders?status=pending     POST /api/seller/orders/<order_id>/fulfill
 //   GET  /api/seller/customers                 GET  /api/seller/reviews
 
@@ -33,6 +34,11 @@ function restock(itemId, input) {
   );
 }
 
+function removeListing(item) {
+  if (!confirm(`Remove "${item.name}"? It will be hidden from buyers and taken out of carts.`)) return;
+  return run(() => api(`/api/seller/listings/${item.id}`, { method: "DELETE" }));
+}
+
 function fulfill(orderId) {
   return run(() => api(`/api/seller/orders/${orderId}/fulfill`, { method: "POST" }));
 }
@@ -46,10 +52,15 @@ function renderListings(listings) {
       el("td", { class: "num" }, item.quantity),
       el("td", { class: "num" }, item.units_sold),
       el("td", {}, amount, " ", el("button", { class: "secondary", onclick: () => restock(item.id, amount) }, "Restock")),
+      el("td", {},
+        el("a", { href: `listing.html?item_id=${item.id}` }, "Edit"), " · ",
+        el("a", { href: `records.html?item_id=${item.id}` }, "Records"),
+        ...(item.is_active ? [" · ", el("button", { class: "link", onclick: () => removeListing(item) }, "Remove")] : []),
+      ),
     );
   });
   document.getElementById("listings").replaceChildren(
-    table(["Item", "Price", "Stock", "Sold", "Add stock"], rows, "You have no listings yet."),
+    table(["Item", "Price", "Stock", "Sold", "Add stock", ""], rows, "You have no listings yet."),
   );
 }
 
